@@ -23,15 +23,14 @@ export default function Piece({ piece, moves, turn, highlightedPieceId }: PieceP
 	}, [moves, turn, highlightedPieceId]);
 
 	return (
-		<>
-			<textbutton
-				Text={piece.type}
-				Size={UDim2.fromOffset(PIECE_SIZE, PIECE_SIZE)}
-				Position={UDim2.fromOffset(PIECE_SIZE * piece.x, PIECE_SIZE * piece.y)}
-				BackgroundColor3={piece.color === "white" ? Color3.fromRGB(235, 235, 235) : Color3.fromRGB(43, 43, 43)}
-				BorderSizePixel={0}
-			/>
+		<textbutton
+			Text={piece.type}
+			Size={UDim2.fromOffset(PIECE_SIZE, PIECE_SIZE)}
+			Position={UDim2.fromOffset(PIECE_SIZE * piece.x, PIECE_SIZE * piece.y)}
+			BackgroundColor3={piece.color === "white" ? Color3.fromRGB(235, 235, 235) : Color3.fromRGB(43, 43, 43)}
+			BorderSizePixel={0}
+		>
 			{moveElements}
-		</>
+		</textbutton>
 	);
 }

@@ -29,7 +29,7 @@ export default function PieceMove({ piece, offset }: PieceMoveProps) {
 			}}
 			Text=""
 			Size={UDim2.fromOffset(PIECE_SIZE, PIECE_SIZE)}
-			Position={UDim2.fromOffset(PIECE_SIZE * x, PIECE_SIZE * y)}
+			Position={UDim2.fromOffset(PIECE_SIZE * offset[0], PIECE_SIZE * offset[1])}
 			BackgroundColor3={Color3.fromRGB(30, 120, 70)}
 			BackgroundTransparency={0.5}
 			BorderSizePixel={0}
