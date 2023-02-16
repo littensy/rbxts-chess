@@ -36,25 +36,21 @@ const initialState: BoardState = {
 
 export const boardReducer = createReducer<BoardState, BoardAction>(initialState, {
 	MOVE_PIECE: (state, action) => {
-		let capturedPiece: BoardPiece | undefined;
+		const capturedPiece = state.pieces.find((piece) => {
+			return piece.x === action.x && piece.y === action.y;
+		});
 
 		return {
 			...state,
 
 			// move the piece to the new position and capture any piece that exists
 			// there by removing it to add it to the captured pieces
-			pieces: state.pieces
-				.map((piece) => {
-					if (piece.id === action.id) {
-						// capture piece if it exists
-						capturedPiece = state.pieces.find((p) => {
-							return p.x === action.x && p.y === action.y && p.color !== piece.color;
-						});
-						return { ...piece, x: action.x, y: action.y };
-					}
-					return piece;
-				})
-				.filter((piece) => piece.id !== capturedPiece?.id),
+			pieces: state.pieces.mapFiltered((piece) => {
+				if (piece.id === action.id) {
+					return { ...piece, x: action.x, y: action.y };
+				}
+				return piece.id !== capturedPiece?.id ? piece : undefined;
+			}),
 
 			// the captured piece is added to the captured pieces array
 			piecesCaptured: capturedPiece ? [...state.piecesCaptured, capturedPiece] : state.piecesCaptured,
@@ -64,12 +60,12 @@ export const boardReducer = createReducer<BoardState, BoardAction>(initialState,
 		};
 	},
 
-	RESET_BOARD: () => initialState,
-
 	HIGHLIGHT_PIECE: (state, action) => {
 		return {
 			...state,
 			highlightedPiece: action.id,
 		};
 	},
+
+	RESET_BOARD: () => initialState,
 });
