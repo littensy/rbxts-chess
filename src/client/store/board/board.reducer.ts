@@ -3,8 +3,7 @@ import { BoardAction } from "./board.actions";
 
 export interface BoardState {
 	pieces: BoardPiece[];
-	whiteCaptured: BoardPiece[];
-	blackCaptured: BoardPiece[];
+	piecesCaptured: BoardPiece[];
 	turn: BoardColor;
 	highlightedPiece: string;
 }
@@ -25,13 +24,12 @@ const initialSecondRow: PieceType[] = table.create(8, "pawn");
 
 const initialState: BoardState = {
 	pieces: [
-		...initialFirstRow.map((type, i): BoardPiece => ({ id: `w${i + 1}`, type, x: i, y: 0, color: "white" })),
-		...initialSecondRow.map((type, i): BoardPiece => ({ id: `w${i + 9}`, type, x: i, y: 1, color: "white" })),
-		...initialFirstRow.map((type, i): BoardPiece => ({ id: `b${i + 1}`, type, x: i, y: 7, color: "black" })),
-		...initialSecondRow.map((type, i): BoardPiece => ({ id: `b${i + 9}`, type, x: i, y: 6, color: "black" })),
+		...initialFirstRow.map((t, i): BoardPiece => ({ id: `w${i + 1}`, type: t, x: i, y: 0, color: "white" })),
+		...initialSecondRow.map((t, i): BoardPiece => ({ id: `w${i + 9}`, type: t, x: i, y: 1, color: "white" })),
+		...initialFirstRow.map((t, i): BoardPiece => ({ id: `b${i + 1}`, type: t, x: i, y: 7, color: "black" })),
+		...initialSecondRow.map((t, i): BoardPiece => ({ id: `b${i + 9}`, type: t, x: i, y: 6, color: "black" })),
 	],
-	whiteCaptured: [],
-	blackCaptured: [],
+	piecesCaptured: [],
 	turn: "black",
 	highlightedPiece: "",
 };
@@ -59,9 +57,7 @@ export const boardReducer = createReducer<BoardState, BoardAction>(initialState,
 				.filter((piece) => piece.id !== capturedPiece?.id),
 
 			// the captured piece is added to the captured pieces array
-			[`${state.turn}Captured`]: capturedPiece
-				? [...state[`${state.turn}Captured`], capturedPiece]
-				: state[`${state.turn}Captured`],
+			piecesCaptured: capturedPiece ? [...state.piecesCaptured, capturedPiece] : state.piecesCaptured,
 
 			// switch the turn
 			turn: state.turn === "white" ? "black" : "white",
